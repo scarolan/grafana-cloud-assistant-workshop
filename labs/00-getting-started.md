@@ -23,7 +23,7 @@ You do **not** need to run or configure anything. The data is already flowing.
    https://caeb48.grafana.net/
    ```
 
-2. Click **Sign in with Grafana.com** and use the credentials provided by your instructor.
+2. Use the lab credentials provided by your instructor (also sent via email).
 
 3. You should land on the **System Overview** dashboard inside the **Field Eng Otel Environment** folder. If you see graphs and panels loading, you're in.
 
