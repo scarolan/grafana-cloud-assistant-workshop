@@ -27,7 +27,6 @@ Grafana Assistant has MCP configured in **Settings → Integrations**. The Grafa
 
 3. Scroll down to the **Quick setup** section. You'll see a search bar and a catalog of popular pre-configured servers including:
    - **GitHub** — search repos, triage pull requests, manage issues
-   - **Honeycomb** — trace requests and debug production issues
    - **Cloudflare Observability** — query Cloudflare telemetry for edge/platform issues
    - **PagerDuty** — manage incidents, on-call schedules, and escalations
    - Plus an **Add custom server** option for your own MCP endpoints
