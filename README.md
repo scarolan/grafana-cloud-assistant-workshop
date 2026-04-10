@@ -4,7 +4,7 @@ A half-day, hands-on workshop teaching field engineers and customers how to use 
 
 ## Target Audience
 
-The **"Wiley" persona**: teams running self-hosted OSS Loki, Mimir, and Tempo who need to see the value of a Grafana Cloud subscription. No cloud-native features required — this workshop focuses on capabilities that work with any Prometheus/Loki/Tempo stack.
+Teams evaluating or onboarding to Grafana Cloud — including those running self-hosted OSS Loki, Mimir, and Tempo. No cloud-native features required; this workshop focuses on capabilities that work with any Prometheus/Loki/Tempo stack.
 
 ## Workshop Environment
 
