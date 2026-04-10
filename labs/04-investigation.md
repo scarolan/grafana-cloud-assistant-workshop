@@ -200,13 +200,11 @@ Think about (or discuss with the group):
 
 ---
 
-**You've completed the workshop.**
+**Congratulations — you've completed the Grafana Assistant Workshop!**
 
-Want to go further? Try:
-- Triggering the next daily outage scenario and running the full investigation from scratch
+You've gone from zero to investigating real incidents with an AI assistant that queries your metrics, logs, and traces in plain English. Everything you learned here works in your own Grafana Cloud environment with your own data.
+
+Want to keep going? Try:
+- Waiting for the next daily outage and running the full investigation from scratch
 - Building a dashboard from your investigation findings
-- Connecting the Grafana Assistant to your team's GitHub repo via MCP and asking it to correlate recent deployments with the incident
-
----
-
-**Back to:** [Lab 03 — Queries & Dashboards](./03-queries-and-dashboards.md)
+- Connecting Grafana Assistant to your team's GitHub repo via MCP and correlating recent deployments with incidents
