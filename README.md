@@ -1,149 +1,91 @@
-# Demo Builder
+# Grafana Assistant Workshop
 
-A template for Grafana SEs to rapidly build customer demos that ship telemetry (metrics, logs, traces) to Grafana Cloud.
+A half-day, hands-on workshop teaching field engineers and customers how to use **Grafana Assistant** — the agentic LLM assistant built into Grafana Cloud.
 
-**How it works:** Copy this template, describe your demo scenario to Claude Code, and it builds out the infrastructure, telemetry pipeline, and tests for you.
+## Target Audience
+
+The **"Wiley" persona**: teams running self-hosted OSS Loki, Mimir, and Tempo who need to see the value of a Grafana Cloud subscription. No cloud-native features required — this workshop focuses on capabilities that work with any Prometheus/Loki/Tempo stack.
+
+## Workshop Environment
+
+The workshop uses **appenv** — a realistic e-commerce application (a telescope shop) running on a shared Grafana Cloud stack. Students don't install or configure anything. The data is already flowing.
+
+- **Stack:** Shared Grafana Cloud instance (provided by instructor)
+- **Data:** 15+ microservices generating metrics, logs, and traces continuously
+- **Outage:** A scheduled daily outage creates real incidents for the investigation lab
+
+## Labs
+
+| # | Lab | Duration | What Students Learn |
+|---|-----|----------|-------------------|
+| 00 | [Getting Started](labs/00-getting-started.md) | ~15 min | Log in, create a personal folder, orient to the environment, send first message to Assistant |
+| 01 | [Memories & Infra Scan](labs/01-memories-infra-scan.md) | ~30 min | Run a discovery scan, understand memories vs. custom rules, see how context improves answers |
+| 02 | [MCP Servers](labs/02-mcp-servers.md) | ~20 min | See what MCP servers are connected, understand what tools Assistant has available |
+| 03 | [Queries & Dashboards](labs/03-queries-and-dashboards.md) | ~40 min | Query logs/metrics/traces in plain English, explain existing panels, build a dashboard from a description |
+| 04 | [Investigation](labs/04-investigation.md) | ~60 min | Investigate a real incident from vague complaint to root cause, launch a formal multi-agent Investigation |
+
+**Total:** ~2.5–3 hours of hands-on lab time
 
 ## Prerequisites
 
-| Tool | Required | Install |
+### For Students
+- A modern web browser (Chrome recommended)
+- Credentials provided by the instructor
+
+### For Instructors
+| Tool | Required | Purpose |
 |------|----------|---------|
-| Make | Yes | Pre-installed on macOS/Linux; WSL: `sudo apt install make` |
-| Docker Desktop | Yes | [docs.docker.com/get-docker](https://docs.docker.com/get-docker/) |
-| GitHub CLI (`gh`) | Yes | [cli.github.com](https://cli.github.com/) |
-| Claude Code | Yes | [docs.anthropic.com/claude-code](https://docs.anthropic.com/en/docs/claude-code) |
-| Terraform | If demo needs cloud resources | [terraform.io/downloads](https://www.terraform.io/downloads) |
-| k6 | For load testing | [grafana.com/docs/k6](https://grafana.com/docs/k6/latest/set-up/install-k6/) |
-| BATS | For running tests | [github.com/bats-core/bats-core](https://github.com/bats-core/bats-core) |
+| BATS | Yes | Automated preflight tests |
+| Claude Code | Recommended | AI-powered QA before delivery |
 
-## Quick Start
+## Instructor Setup
 
-### 1. Create your demo repo from this template
+### 1. Provision the environment
 
-Name it `grafana-cloud-<technology>-demo` (e.g., `grafana-cloud-oracle-demo`, `grafana-cloud-mssql-demo`):
+Ensure an appenv instance is running and generating telemetry on a Grafana Cloud stack. See [grafana/appenv](https://github.com/grafana/appenv) for setup.
 
-```bash
-gh repo create grafana-cloud-mytech-demo --template grafana/demo-builder --private
-sleep 5
-gh repo clone grafana-cloud-mytech-demo
-cd grafana-cloud-mytech-demo
-```
-
-### 2. Configure Grafana Cloud credentials
+### 2. Configure credentials
 
 ```bash
 cp .env.example .env
-# Edit .env with your Grafana Cloud credentials
-# Find them at: grafana.com → My Account → Stack details
+# Fill in GRAFANA_WORKSHOP_URL, GRAFANA_SA_TOKEN, and student credentials
 ```
 
-### 3. Verify prerequisites
+### 3. Run preflight tests
 
 ```bash
-make preflight
+make workshop-test       # 34 automated checks (content + stack + data)
 ```
 
-### 4. Add Grafana MCP server (for dashboards)
-
-Create a Service Account with **Editor** role in your Grafana Cloud instance (Administration > Service Accounts), generate a token, then:
+### 4. Full QA (day before delivery)
 
 ```bash
-claude mcp add --transport stdio grafana \
-    --env GRAFANA_URL=https://your-instance.grafana.net \
-    --env GRAFANA_API_KEY=glsa_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \
-    -- docker run -i --rm \
-      -e GRAFANA_URL \
-      -e GRAFANA_API_KEY \
-      mcp/grafana --transport=stdio
+make workshop-qa         # Claude Code walks through every lab in Chrome
 ```
 
-This lets Claude Code create and edit dashboards directly in your Grafana Cloud instance.
+## Testing
 
-### 5. Describe your scenario to Claude Code
+| Command | What it checks | Auth needed |
+|---------|---------------|-------------|
+| `make workshop-content` | Lab files exist, links resolve, structure valid, no placeholders | None |
+| `make workshop-preflight` | Stack reachable, dashboards exist, data sources configured, Assistant installed | SA token |
+| `make workshop-data` | Logs flowing, metrics present, checkout latency data, pod restarts | SA token |
+| `make workshop-test` | All of the above | SA token |
+| `make workshop-qa` | Full AI walkthrough of every lab via Claude Code + Chrome | Browser session |
 
-```bash
-claude
-```
+The SA token needs a service account with **Admin** or **Viewer** role. Tests gracefully skip if permissions are insufficient.
 
-Tell Claude what you're demoing. For example:
-> "I need a demo showing a Python Flask app with PostgreSQL. The app should expose REST endpoints, emit traces via OpenTelemetry, and I need to show database query metrics in Grafana Cloud."
-
-Claude Code reads `CLAUDE.md` and follows the 10-step workflow to build your demo.
-
-### 6. Start, test, and demo
-
-```bash
-make start          # Start all services
-make test           # Verify everything works
-make load-test      # Generate traffic (optional)
-make stop           # Tear down when done
-```
-
-## Template Structure
+## Repository Structure
 
 ```
-├── CLAUDE.md                    # Guide for Claude Code (the brain)
-├── README.md                    # This file
-├── Makefile                     # Task runner (run 'make help')
-├── .env.example                 # Grafana Cloud credentials template
-├── .gitignore                   # Prevents secrets from being committed
-├── docker-compose.yml           # Services (Alloy + your demo apps)
-├── alloy/
-│   └── config.alloy             # Telemetry pipeline configuration
-├── terraform/                   # Cloud infrastructure (when needed)
-│   ├── providers.tf
-│   ├── variables.tf
-│   ├── main.tf
-│   ├── outputs.tf
-│   └── terraform.tfvars.example
-├── scripts/
-│   ├── preflight-check.sh       # Prerequisite verification
-│   ├── start-demo.sh            # Start everything
-│   └── stop-demo.sh             # Stop everything
-├── tests/
-│   ├── README.md                # Testing guide
-│   ├── preflight.bats           # Tool/config checks
-│   ├── smoke.bats               # Service health checks
-│   └── telemetry.bats           # Data flow verification
-├── k6/
-│   ├── README.md                # Load testing guide
-│   └── load-test.js             # k6 load test script
-└── dashboards/
-    └── README.md                # Dashboard export/import instructions
+labs/                          # Workshop lab exercises (markdown)
+tests/
+  workshop-content.bats        # Markdown structure validation
+  workshop-preflight.bats      # Grafana stack health checks
+  workshop-data.bats           # Data quality assertions
+scripts/
+  workshop-qa.sh               # Claude Code AI-powered QA
+Makefile                       # Task runner (make help)
+CLAUDE.md                      # Instructions for Claude Code
+.env.example                   # Credential template
 ```
-
-## Conventions
-
-- **Docker Compose V2** — `docker compose` (space, not hyphen)
-- **Pinned image versions** — no `:latest` tags
-- **Health checks on every service** — enables reliable `depends_on`
-- **All secrets in `.env`** — never hardcoded
-- **Local Terraform state** — demos are ephemeral, no remote backends
-- **BATS for testing** — purpose-built for CLI/infrastructure verification
-- **Dashboards via Grafana MCP** — Claude Code pushes dashboards directly to Grafana Cloud
-
-## Available Make Targets
-
-Run `make help` to see all targets:
-
-| Target | Description |
-|--------|-------------|
-| `make help` | Show available targets |
-| `make preflight` | Run preflight checks |
-| `make start` | Start the demo |
-| `make stop` | Stop the demo |
-| `make test` | Run all tests |
-| `make test-preflight` | Run preflight tests only |
-| `make test-smoke` | Run smoke tests only |
-| `make test-telemetry` | Run telemetry tests only |
-| `make load-test` | Run k6 load test |
-| `make clean` | Remove containers, volumes, networks |
-
-## Graduating a Demo
-
-When a demo is polished enough to share across the SE team:
-
-1. Ensure all tests pass (`make test`)
-2. Update this README with demo-specific documentation
-3. Export and commit dashboards to `dashboards/`
-4. Request transfer to the grafana org via your team lead
