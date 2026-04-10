@@ -131,9 +131,9 @@ token_can_access() {
 # ---------------------------------------------------------------------------
 
 @test "grafana assistant app is installed" {
-  token_can_access "/api/plugins/grafana-assistant-app" || \
+  token_can_access "/api/plugins?type=app" || \
     skip "SA token lacks plugins:read permission"
-  run grafana_api "/api/plugins/grafana-assistant-app"
+  run grafana_api "/api/plugins?type=app"
   [ "$status" -eq 0 ]
-  echo "$output" | grep -q '"id":"grafana-assistant-app"'
+  echo "$output" | grep -q '"grafana-assistant-app"'
 }
