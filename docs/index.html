@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grafana Assistant Workshop</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: #181b1f;
+      color: #ddd;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    .card {
+      background: #222;
+      border: 1px solid #333;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #f46800;
+    }
+    .card-title { color: #fff; }
+    .card-text { color: #aaa; font-size: 0.9em; }
+    .badge-duration {
+      background: #f46800;
+      color: white;
+      font-size: 0.75em;
+      padding: 4px 10px;
+      border-radius: 12px;
+    }
+    a.card-link { text-decoration: none; }
+    .hero { padding: 60px 0 40px; text-align: center; }
+    .hero h1 { color: #fff; font-size: 2.5em; font-weight: 700; }
+    .hero p { color: #aaa; font-size: 1.1em; max-width: 600px; margin: 0 auto; }
+    .section-label {
+      color: #f46800;
+      text-transform: uppercase;
+      font-size: 0.8em;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <h1>Grafana Assistant Workshop</h1>
+      <p>A hands-on workshop teaching you to query, investigate, and build dashboards using Grafana's AI assistant.</p>
+    </div>
+
+    <div class="section-label">Instructor Slides</div>
+    <div class="row g-4 mb-5">
+      <div class="col-md-4">
+        <a href="00-getting-started/" class="card-link">
+          <div class="card h-100 p-3">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="card-title h5 mb-0">Lab 00</span>
+                <span class="badge-duration">~15 min</span>
+              </div>
+              <h6 class="card-title">Getting Started</h6>
+              <p class="card-text">Log in, create a personal folder, orient to the environment, meet Grafana Assistant.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a href="01-memories-infra-scan/" class="card-link">
+          <div class="card h-100 p-3">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="card-title h5 mb-0">Lab 01</span>
+                <span class="badge-duration">~30 min</span>
+              </div>
+              <h6 class="card-title">Memories & Infra Scan</h6>
+              <p class="card-text">Run a discovery scan, create custom rules, see how context improves Assistant's answers.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a href="02-mcp-servers/" class="card-link">
+          <div class="card h-100 p-3">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="card-title h5 mb-0">Lab 02</span>
+                <span class="badge-duration">~20 min</span>
+              </div>
+              <h6 class="card-title">MCP Servers</h6>
+              <p class="card-text">Explore what tools Assistant has access to and how MCP extends its capabilities.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a href="03-queries-and-dashboards/" class="card-link">
+          <div class="card h-100 p-3">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="card-title h5 mb-0">Lab 03</span>
+                <span class="badge-duration">~40 min</span>
+              </div>
+              <h6 class="card-title">Queries & Dashboards</h6>
+              <p class="card-text">Query logs, metrics, and traces in plain English. Explain panels. Build a dashboard.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a href="04-investigation/" class="card-link">
+          <div class="card h-100 p-3">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="card-title h5 mb-0">Lab 04</span>
+                <span class="badge-duration">~60 min</span>
+              </div>
+              <h6 class="card-title">Investigation</h6>
+              <p class="card-text">Investigate a real incident end-to-end. Launch a multi-agent swarm investigation.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

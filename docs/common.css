@@ -1,0 +1,97 @@
+/* Grafana Assistant Workshop — Shared slide styles */
+
+:root {
+  --grafana-orange: #f46800;
+  --grafana-dark: #181b1f;
+  --grafana-blue: #3274d9;
+  --grafana-green: #56a64b;
+  --grafana-red: #e02f44;
+}
+
+.reveal {
+  font-size: 1.6em;
+}
+
+.reveal h1, .reveal h2, .reveal h3 {
+  text-transform: none;
+}
+
+.reveal h1 {
+  font-size: 1.8em;
+}
+
+.reveal h2 {
+  font-size: 1.4em;
+}
+
+.reveal code {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+
+.reveal pre code {
+  background: #1e1e2e;
+  padding: 16px;
+  border-radius: 8px;
+  font-size: 0.7em;
+  max-height: 500px;
+}
+
+.reveal blockquote {
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 4px solid var(--grafana-orange);
+  padding: 12px 20px;
+  font-style: normal;
+  width: 85%;
+}
+
+.reveal ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.reveal ul li::before {
+  content: ">";
+  color: var(--grafana-orange);
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.reveal .subtitle {
+  color: #aaa;
+  font-size: 0.7em;
+}
+
+.reveal .lab-link {
+  background: var(--grafana-orange);
+  color: white;
+  padding: 12px 32px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.9em;
+  display: inline-block;
+  margin-top: 20px;
+}
+
+.reveal .lab-link:hover {
+  background: #e05d00;
+}
+
+.reveal .tip {
+  background: rgba(50, 116, 217, 0.15);
+  border-left: 4px solid var(--grafana-blue);
+  padding: 12px 20px;
+  text-align: left;
+  font-size: 0.75em;
+  border-radius: 0 8px 8px 0;
+}
+
+.reveal img.logo {
+  height: 60px;
+  border: none;
+  box-shadow: none;
+  margin: 0;
+  vertical-align: middle;
+}

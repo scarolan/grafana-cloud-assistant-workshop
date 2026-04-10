@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Lab 02: MCP Servers</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/theme/night.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/plugin/highlight/monokai.css">
+  <link rel="stylesheet" href="../common.css">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <section data-markdown>
+        <textarea data-template>
+## Lab 02: MCP Servers
+#### Grafana Assistant Workshop
+
+<span class="subtitle">~20 minutes</span>
+
+---
+
+## What is MCP?
+
+**Model Context Protocol** — an open standard that lets AI assistants connect to external tools.
+
+Without MCP: Assistant answers questions from your data sources.
+
+With MCP: Assistant can **take action** in external systems — search GitHub, query Kubernetes, interact with PagerDuty.
+
+Think of MCP servers as **plugins** for your AI assistant.
+
+---
+
+## What's Already Connected
+
+This environment has a **Kubernetes MCP server** pre-configured:
+
+- 8 tools enabled (pod status, deployments, logs, etc.)
+- Healthy and ready to use
+- Accessible to all users in this stack
+
+The **Quick setup** catalog has more: GitHub, Cloudflare, PagerDuty, and custom servers.
+
+---
+
+## What You'll Do
+
+- Find the MCP servers page (Settings > Integrations)
+- Verify the Kubernetes MCP server is healthy
+- Ask Assistant what tools it has available
+- Use a built-in tool to search for dashboards
+
+---
+
+## Go Do the Lab
+
+**labs/02-mcp-servers.md**
+
+<span class="subtitle">When you've completed the checkpoint, you're ready for Lab 03.</span>
+
+        </textarea>
+      </section>
+
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/plugin/markdown/markdown.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/plugin/highlight/highlight.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/plugin/notes/notes.js"></script>
+  <script src="../common-scripts.js"></script>
+</body>
+</html>

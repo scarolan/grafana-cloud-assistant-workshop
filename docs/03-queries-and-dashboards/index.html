@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Lab 03: Queries & Dashboards</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/theme/night.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/plugin/highlight/monokai.css">
+  <link rel="stylesheet" href="../common.css">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <section data-markdown>
+        <textarea data-template>
+## Lab 03: Queries & Dashboards
+#### Grafana Assistant Workshop
+
+<span class="subtitle">~40 minutes</span>
+
+---
+
+## The Query Language Barrier
+
+PromQL, LogQL, TraceQL — powerful but steep learning curves.
+
+```promql
+sum(rate(http_requests_total{status=~"5.."}[5m]))
+  / sum(rate(http_requests_total[5m]))
+```
+
+What if you could just ask:
+
+> *"What percentage of requests are failing?"*
+
+That's what Assistant does.
+
+---
+
+## What to Watch For
+
+When you query, notice how Assistant works:
+
+- **Reasoning steps** — collapsible items showing what it searched and queried
+- **Inline charts** — metrics responses include live time-series graphs
+- **PromQL in the legend** — this is how you learn the syntax organically
+- **Follow-up chips** — context-aware suggestions for your next question
+
+---
+
+## What You'll Do
+
+**Part A:** Query logs, metrics, and traces in plain English
+
+**Part B:** Ask Assistant to explain existing dashboard panels
+
+**Part C:** Build a new dashboard from a text description
+
+---
+
+## Go Do the Lab
+
+**labs/03-queries-and-dashboards.md**
+
+<span class="subtitle">When you've completed the checkpoint, you're ready for Lab 04.</span>
+
+        </textarea>
+      </section>
+
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/plugin/markdown/markdown.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/plugin/highlight/highlight.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/plugin/notes/notes.js"></script>
+  <script src="../common-scripts.js"></script>
+</body>
+</html>
