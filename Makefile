@@ -1,4 +1,5 @@
-.PHONY: help preflight start stop test test-preflight test-smoke test-telemetry load-test clean
+.PHONY: help preflight start stop test test-preflight test-smoke test-telemetry load-test clean \
+       workshop-test workshop-preflight workshop-data workshop-content workshop-qa
 
 help: ## Show this help message
 	@echo "Demo Builder — Available targets:"
@@ -32,3 +33,21 @@ load-test: ## Run k6 load test (inside Docker network)
 clean: ## Remove all demo containers, volumes, and networks
 	@docker compose down --volumes --remove-orphans 2>/dev/null || true
 	@echo "Cleaned up Docker resources."
+
+# =============================================================================
+# Workshop Testing
+# =============================================================================
+
+workshop-test: workshop-content workshop-preflight workshop-data ## Run all workshop tests (no browser)
+
+workshop-content: ## Validate lab markdown structure and links
+	@bats tests/workshop-content.bats
+
+workshop-preflight: ## Check Grafana stack health, auth, and features
+	@bats tests/workshop-preflight.bats
+
+workshop-data: ## Verify lab query data exists in the environment
+	@bats tests/workshop-data.bats
+
+workshop-qa: ## Full AI-powered QA via Claude Code + Chrome (run day before workshop)
+	@bash scripts/workshop-qa.sh
