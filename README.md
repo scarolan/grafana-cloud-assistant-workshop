@@ -1,5 +1,7 @@
 # Grafana Assistant Workshop
 
+![Grafana Assistant](docs/images/assistant.png)
+
 A half-day, hands-on workshop teaching field engineers and customers how to use **Grafana Assistant** — the agentic LLM assistant built into Grafana Cloud.
 
 ## Target Audience
