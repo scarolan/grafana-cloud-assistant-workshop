@@ -54,31 +54,36 @@ cp .env.example .env
 ### 3. Run preflight tests
 
 ```bash
-make workshop-test       # 34 automated checks (content + stack + data)
+make test                # 34 automated checks (content + stack + data)
 ```
 
 ### 4. Full QA (day before delivery)
 
 ```bash
-make workshop-qa         # Claude Code walks through every lab in Chrome
+make qa                  # Claude Code walks through every lab in Chrome
 ```
 
 ## Testing
 
 | Command | What it checks | Auth needed |
 |---------|---------------|-------------|
-| `make workshop-content` | Lab files exist, links resolve, structure valid, no placeholders | None |
-| `make workshop-preflight` | Stack reachable, dashboards exist, data sources configured, Assistant installed | SA token |
-| `make workshop-data` | Logs flowing, metrics present, checkout latency data, pod restarts | SA token |
-| `make workshop-test` | All of the above | SA token |
-| `make workshop-qa` | Full AI walkthrough of every lab via Claude Code + Chrome | Browser session |
+| `make content` | Lab files exist, links resolve, structure valid, no placeholders | None |
+| `make preflight` | Stack reachable, dashboards exist, data sources configured, Assistant installed | SA token |
+| `make data` | Logs flowing, metrics present, checkout latency data, pod restarts | SA token |
+| `make test` | All of the above | SA token |
+| `make qa` | Full AI walkthrough of every lab via Claude Code + Chrome | Browser session |
 
 The SA token needs a service account with **Admin** or **Viewer** role. Tests gracefully skip if permissions are insufficient.
 
 ## Repository Structure
 
 ```
-labs/                          # Workshop lab exercises (markdown)
+labs/
+  00-getting-started.md        # Log in, orient, say hello
+  01-memories-infra-scan.md    # Discovery scan, custom rules
+  02-mcp-servers.md            # MCP integrations overview
+  03-queries-and-dashboards.md # NL queries, explain panels, build dashboards
+  04-investigation.md          # Incident investigation + multi-agent swarm
 tests/
   workshop-content.bats        # Markdown structure validation
   workshop-preflight.bats      # Grafana stack health checks

@@ -1,53 +1,21 @@
-.PHONY: help preflight start stop test test-preflight test-smoke test-telemetry load-test clean \
-       workshop-test workshop-preflight workshop-data workshop-content workshop-qa
+.PHONY: help test content preflight data qa
 
 help: ## Show this help message
-	@echo "Demo Builder — Available targets:"
+	@echo "Grafana Assistant Workshop — Available targets:"
 	@echo ""
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-18s\033[0m %s\n", $$1, $$2}'
 	@echo ""
 
-preflight: ## Run preflight checks (Docker, .env, tools)
-	@./scripts/preflight-check.sh
+test: content preflight data ## Run all automated tests (content + stack + data)
 
-start: ## Start the demo (preflight → terraform → docker → health check)
-	@./scripts/start-demo.sh
-
-stop: ## Stop the demo (docker down → terraform destroy)
-	@./scripts/stop-demo.sh
-
-test: test-preflight test-smoke test-telemetry ## Run all tests
-
-test-preflight: ## Run preflight tests
-	@bats tests/preflight.bats
-
-test-smoke: ## Run smoke tests (containers running and healthy)
-	@bats tests/smoke.bats
-
-test-telemetry: ## Run telemetry tests (metrics flowing to Grafana Cloud)
-	@bats tests/telemetry.bats
-
-load-test: ## Run k6 load test (inside Docker network)
-	@docker compose --profile load-test run --rm k6 run /scripts/load-test.js
-
-clean: ## Remove all demo containers, volumes, and networks
-	@docker compose down --volumes --remove-orphans 2>/dev/null || true
-	@echo "Cleaned up Docker resources."
-
-# =============================================================================
-# Workshop Testing
-# =============================================================================
-
-workshop-test: workshop-content workshop-preflight workshop-data ## Run all workshop tests (no browser)
-
-workshop-content: ## Validate lab markdown structure and links
+content: ## Validate lab markdown structure and links
 	@bats tests/workshop-content.bats
 
-workshop-preflight: ## Check Grafana stack health, auth, and features
+preflight: ## Check Grafana stack health, auth, and features
 	@bats tests/workshop-preflight.bats
 
-workshop-data: ## Verify lab query data exists in the environment
+data: ## Verify lab query data exists in the environment
 	@bats tests/workshop-data.bats
 
-workshop-qa: ## Full AI-powered QA via Claude Code + Chrome (run day before workshop)
+qa: ## Full AI-powered QA via Claude Code + Chrome (run day before workshop)
 	@bash scripts/workshop-qa.sh
