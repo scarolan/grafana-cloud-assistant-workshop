@@ -32,71 +32,75 @@ Before diving in — a quick orientation to the conversation interface:
 
 1. Open Grafana Assistant from the left sidebar.
 
-2. Ask:
+2. Start broad — let Assistant find whatever is interesting:
 
    ```
-   Show me error logs from the payment service in the last hour
+   Show me error and critical logs from the last 6 hours
    ```
 
-   Assistant will run a LogQL query against Loki. If the payment service is healthy at the moment, it will report no error logs and tell you why (e.g., logs are numeric JSON levels, service is showing only info-level entries). That's a valid result — pay attention to how it adapts its query approach. If there are no errors, click the **"All services errors"** follow-up chip to check across all services instead.
+   Assistant will run a LogQL query against Loki and return matching log lines. The telescope shop has ongoing background issues — you should see database errors, connection failures, or gRPC initialization problems. Watch how Assistant adapts if its first query attempt doesn't match the log format.
 
 3. Follow up with:
 
    ```
-   Are there any patterns in these errors?
+   Are there any patterns in these errors? Group them by type.
    ```
 
-   Assistant will analyze the results and summarize what it sees — common error messages, frequency, any obvious groupings.
+   Assistant will analyze the results and summarize: common error messages, which services produced them, and whether they're clustered in time or spread out.
 
-4. Try narrowing it down:
+4. Try narrowing to a specific signal:
 
    ```
-   Show only the logs that mention "timeout"
+   Show me only logs that mention "connection" in the last 6 hours
    ```
+
+   This should surface connection refused errors and gRPC connection failures — a common pattern when database pods restart.
 
 ---
 
 ### Step 2: Query Metrics in Plain English
 
-1. Ask:
+1. Ask a question that surfaces a real problem:
 
    ```
-   What is the request rate for the checkout service right now?
+   Which service has the highest P95 latency right now?
    ```
 
-   Assistant will query Mimir/Prometheus and return the current rate along with an **inline time-series chart** showing the last hour. The PromQL query it used appears in the chart legend — this is how you learn the actual query syntax.
+   Assistant will query Mimir/Prometheus and return results with an **inline time-series chart**. The checkout service typically shows elevated latency (~400–900ms) — much higher than other services. The PromQL query appears in the chart legend — this is how you learn the actual query syntax.
 
-2. Ask for a comparison:
-
-   ```
-   How does that compare to an hour ago?
-   ```
-
-3. Ask about error rates:
+2. Dig deeper:
 
    ```
-   What percentage of checkout requests are failing?
+   How does checkout latency compare to the other services?
    ```
 
-   This is a ratio query — Assistant will combine two metrics to compute it. Watch the query it produces.
+3. Now check error rates across the board:
+
+   ```
+   Which services have the highest error rates right now?
+   ```
+
+   This is a broad query that shows Assistant searching multiple metric types. Watch how it tries different approaches (HTTP status codes, span status codes, error ratios) to find the most relevant answer.
 
 ---
 
 ### Step 3: Explore Traces
 
-1. Ask:
+1. Follow the latency you discovered in Step 2:
 
    ```
-   Show me the slowest traces from the frontend service in the last 30 minutes
+   Show me the slowest traces from the checkout service in the last hour
    ```
 
-   Assistant will query Tempo and return trace IDs with their durations.
+   Assistant will query Tempo and return trace IDs with their durations. You should see some traces with several hundred milliseconds of latency.
 
-2. Ask:
+2. Ask the key question:
 
    ```
-   Which service is responsible for the most latency in these traces?
+   In those traces, which service or span is adding the most latency?
    ```
+
+   This reveals the bottleneck — often a downstream database call or a dependent service. This is the same detective flow you'd use in a real incident.
 
 ---
 
@@ -153,8 +157,10 @@ Before diving in — a quick orientation to the conversation interface:
    ```
    Create a dashboard in my personal folder called "Checkout Service RED Metrics" with three panels: 
    request rate, error rate, and p95 latency for the checkout service. 
-   Use the last 1 hour as the default time range.
+   Use the last 6 hours as the default time range.
    ```
+
+   > **Why 6 hours?** The checkout service has intermittent issues caused by the daily outage. A 6-hour window gives you enough history to see the pattern, rather than a flat line during a quiet period.
 
    Replace "my personal folder" with the folder name you created in Lab 00.
 

@@ -22,6 +22,8 @@ This lab has two parts:
 
 That's all you know. Start there.
 
+> **Note:** The telescope shop experiences daily outages at varying times. If the outage hasn't happened recently, broaden your time ranges to the last 6–24 hours — you'll find evidence of the most recent incident. The investigation pattern is the same regardless of timing.
+
 ---
 
 ## Part A: Conversation-Based Investigation
@@ -33,12 +35,12 @@ That's all you know. Start there.
 2. In the text input, type:
 
    ```
-   Users are reporting checkout failures for the last 20 minutes. What services are showing elevated error rates right now?
+   Users are reporting checkout failures. What services are showing elevated error rates or high latency? Check the last 6 hours.
    ```
 
-3. Wait for the response. Assistant will query Mimir/Prometheus and return error rates by service. Notice that it shows its work — you'll see it running queries for error rates, P99 latency, and related metrics.
+3. Wait for the response. Assistant will query Mimir/Prometheus and return error rates and latency by service. Notice that it shows its work — you'll see it running queries for error rates, P95 latency, and related metrics. This typically takes 15–30 seconds.
 
-4. Look at the response table. Which services have elevated error rates? Note any with a **Status** that isn't OK.
+4. Look at the response. Which services have elevated error rates or unusual latency? The checkout service usually shows high P95 latency, and you may see pod restarts or database connection issues mentioned.
 
 > **Tip:** Each response includes **follow-up suggestion chips** at the bottom. These are context-aware — click them to keep the investigation moving without having to type the next question.
 
@@ -49,7 +51,7 @@ That's all you know. Start there.
 5. Click the follow-up chip for the service showing errors, or type:
 
    ```
-   Show me error logs from [affected service] in the last 30 minutes
+   Show me error logs from [affected service] in the last 6 hours
    ```
 
 6. Ask Assistant to summarize:
@@ -73,7 +75,7 @@ That's all you know. Start there.
 8. Switch to traces to find where the latency or failure is occurring:
 
    ```
-   Show me traces for [affected service] requests that resulted in errors in the last 30 minutes
+   Show me traces for [affected service] requests that resulted in errors or high latency in the last hour
    ```
 
 9. Ask:
